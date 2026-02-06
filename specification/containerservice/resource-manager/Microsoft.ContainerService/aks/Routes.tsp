@@ -10,7 +10,7 @@ using Versioning;
 
 namespace Microsoft.ContainerService;
 
-#suppress "@azure-tools/typespec-azure-resource-manager/arm-resource-interface-requires-decorator" "FIXME: Update justification, follow aka.ms/tsp/conversion-fix for details"
+#suppress "@azure-tools/typespec-azure-resource-manager/arm-resource-interface-requires-decorator" "Interface pattern follows existing AKS operation structure for backward compatibility."
 interface ManagedClustersOperationGroup {
   /**
    * Contains extra metadata on the version, including supported patch versions, capabilities, available upgrades, and details on preview status of the version
@@ -27,7 +27,7 @@ interface ManagedClustersOperationGroup {
   >;
 }
 
-#suppress "@azure-tools/typespec-azure-resource-manager/arm-resource-interface-requires-decorator" "FIXME: Update justification, follow aka.ms/tsp/conversion-fix for details"
+#suppress "@azure-tools/typespec-azure-resource-manager/arm-resource-interface-requires-decorator" "Interface pattern follows existing AKS operation structure for backward compatibility."
 interface TrustedAccessRolesOperationGroup {
   /**
    * List supported trusted access roles.

@@ -14,7 +14,7 @@ namespace Microsoft.ContainerService;
 /**
  * The list of available upgrade versions.
  */
-#suppress "@azure-tools/typespec-azure-resource-manager/arm-resource-provisioning-state" "FIXME: Update justification, follow aka.ms/tsp/conversion-fix for details"
+#suppress "@azure-tools/typespec-azure-resource-manager/arm-resource-provisioning-state" "AKS uses custom provisioning states beyond standard ARM states. Using string type for forward compatibility."
 model AgentPoolUpgradeProfileProperties {
   /**
    * The Kubernetes version (major.minor.patch).
@@ -90,7 +90,6 @@ model AgentPoolRecentlyUsedVersion {
   /**
    * The timestamp when this version was last used.
    */
-  // FIXME: (utcDateTime) Please double check that this is the correct type for your scenario.
   timestamp?: utcDateTime;
 }
 /**

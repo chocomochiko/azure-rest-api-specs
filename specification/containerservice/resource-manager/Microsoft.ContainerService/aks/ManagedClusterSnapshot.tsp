@@ -17,7 +17,7 @@ namespace Microsoft.ContainerService;
 /**
  * Properties for a managed cluster snapshot.
  */
-#suppress "@azure-tools/typespec-azure-resource-manager/arm-resource-provisioning-state" "FIXME: Update justification, follow aka.ms/tsp/conversion-fix for details"
+#suppress "@azure-tools/typespec-azure-resource-manager/arm-resource-provisioning-state" "AKS uses custom provisioning states beyond standard ARM states. Using string type for forward compatibility."
 @added(Versions.v2025_10_02_preview)
 model ManagedClusterSnapshotProperties {
   /**

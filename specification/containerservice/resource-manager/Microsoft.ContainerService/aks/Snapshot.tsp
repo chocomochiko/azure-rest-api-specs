@@ -16,7 +16,7 @@ namespace Microsoft.ContainerService;
 /**
  * Properties used to configure a node pool snapshot.
  */
-#suppress "@azure-tools/typespec-azure-resource-manager/arm-resource-provisioning-state" "FIXME: Update justification, follow aka.ms/tsp/conversion-fix for details"
+#suppress "@azure-tools/typespec-azure-resource-manager/arm-resource-provisioning-state" "AKS uses custom provisioning states beyond standard ARM states. Using string type for forward compatibility."
 model SnapshotProperties {
   /**
    * CreationData to be used to specify the source agent pool resource ID to create this snapshot.
@@ -61,7 +61,7 @@ model SnapshotProperties {
   /**
    * Whether to use a FIPS-enabled OS.
    */
-  #suppress "@azure-tools/typespec-azure-core/casing-style" "FIXME: Update justification, follow aka.ms/tsp/conversion-fix for details"
+  #suppress "@azure-tools/typespec-azure-core/casing-style" "Property name maintained for backward compatibility with existing API versions"
   @visibility(Lifecycle.Read)
   enableFIPS?: boolean;
 }
