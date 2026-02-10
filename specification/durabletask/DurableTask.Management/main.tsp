@@ -14,6 +14,12 @@ namespace Microsoft.DurableTask;
 
 interface Operations extends Azure.ResourceManager.Operations {}
 
+model MyPrivateLinkResource is PrivateLink;
+alias PrivateLinkOperations = PrivateLinks<MyPrivateLinkResource>;
+
+model PrivateEndpointConnection is PrivateEndpointConnectionResource;
+alias PrivateEndpointOperations = PrivateEndpoints<PrivateEndpointConnection>;
+
 @doc("API Versions")
 enum Versions {
   @armCommonTypesVersion(Azure.ResourceManager.CommonTypes.Versions.v5)
@@ -287,6 +293,29 @@ interface Schedulers {
   listByResourceGroup is ArmResourceListByParent<Scheduler>;
   @doc("List Schedulers by subscription")
   listBySubscription is ArmListBySubscription<Scheduler>;
+
+  @added(Versions.v2026_02_01)
+  @doc("Get a private link resource for the durable task scheduler")
+  getPrivateLink is PrivateLinkOperations.Read<Scheduler>;
+  @added(Versions.v2026_02_01)
+  @doc("List private link resources for the durable task scheduler")
+  listPrivateLinks is PrivateLinkOperations.ListByParent<Scheduler>;
+
+  @added(Versions.v2026_02_01)
+  @doc("Get a private endpoint connection for the durable task scheduler")
+  getPrivateEndpointConnection is PrivateEndpointOperations.Read<Scheduler>;
+  @added(Versions.v2026_02_01)
+  @doc("Create or update a private endpoint connection for the durable task scheduler")
+  createOrUpdatePrivateEndpointConnection is PrivateEndpointOperations.CreateOrUpdateAsync<Scheduler>;
+  @added(Versions.v2026_02_01)
+  @doc("Update a private endpoint connection for the durable task scheduler")
+  updatePrivateEndpointConnection is PrivateEndpointOperations.CustomPatchAsync<Scheduler>;
+  @added(Versions.v2026_02_01)
+  @doc("Delete a private endpoint connection for the durable task scheduler")
+  deletePrivateEndpointConnection is PrivateEndpointOperations.DeleteAsync<Scheduler>;
+  @added(Versions.v2026_02_01)
+  @doc("List private endpoint connections for the durable task scheduler")
+  listPrivateEndpointConnections is PrivateEndpointOperations.ListByParent<Scheduler>;
 }
 
 @armResourceOperations(TaskHub)
@@ -319,28 +348,4 @@ interface RetentionPolicies {
   delete is ArmResourceDeleteWithoutOkAsync<RetentionPolicy>;
   @doc("List Retention Policies")
   listByScheduler is ArmResourceListByParent<RetentionPolicy>;
-}
-
-/** Private endpoint connections operations */
-@added(Versions.v2026_02_01)
-@armResourceOperations(PrivateEndpointConnectionResource)
-interface PrivateEndpointConnections {
-  /** List existing private endpoint connections */
-  list is ArmResourceListByParent<PrivateEndpointConnectionResource>;
-  /** Get a specific private endpoint connection */
-  get is ArmResourceRead<PrivateEndpointConnectionResource>;
-  /** Create a private endpoint connection */
-  create is ArmResourceCreateOrReplaceAsync<PrivateEndpointConnectionResource>;
-  /** Delete the private endpoint connection */
-  delete is ArmResourceDeleteWithoutOkAsync<PrivateEndpointConnectionResource>;
-}
-
-/** Operations for private link resources on Scheduler */
-@added(Versions.v2026_02_01)
-@armResourceOperations(PrivateLinkResource)
-interface PrivateLinkResources {
-  /** list private link resources on the given resource */
-  list is ArmResourceListByParent<PrivateLinkResource>;
-  /** Get a specific private link resource */
-  get is ArmResourceRead<PrivateLinkResource>;
 }
