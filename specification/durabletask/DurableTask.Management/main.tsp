@@ -27,6 +27,10 @@ enum Versions {
   @armCommonTypesVersion(Azure.ResourceManager.CommonTypes.Versions.v6)
   @doc("2025-11-01")
   v2025_11_01: "2025-11-01",
+
+  @armCommonTypesVersion(Azure.ResourceManager.CommonTypes.Versions.v6)
+  @doc("2026-02-01")
+  v2026_02_01: "2026-02-01",
 }
 
 @doc("A Durable Task Scheduler resource")
@@ -56,6 +60,15 @@ model SchedulerProperties {
 
   @doc("SKU of the durable task scheduler")
   sku: SchedulerSku;
+
+  @added(Versions.v2026_02_01)
+  @doc("Allow or disallow public network access to durable task scheduler")
+  publicNetworkAccess?: PublicNetworkAccess;
+
+  /** The private endpoints exposed by this resource */
+  @added(Versions.v2026_02_01)
+  @visibility(Lifecycle.Read)
+  privateEndpointConnections?: PrivateEndpointConnection[];
 }
 
 @doc("The SKU (Stock Keeping Unit) assigned to this durable task scheduler")
@@ -155,6 +168,32 @@ model RetentionPolicyDetails {
   orchestrationState?: PurgeableOrchestrationState;
 }
 
+/** Holder for private endpoint connections */
+@added(Versions.v2026_02_01)
+@parentResource(Scheduler)
+model PrivateEndpointConnectionResource
+  is ProxyResource<PrivateEndpointConnectionProperties> {
+  ...PrivateEndpointConnectionParameter;
+}
+
+@added(Versions.v2026_02_01)
+@parentResource(Scheduler)
+model PrivateLinkResource is ProxyResource<PrivateLinkResourceProperties> {
+  ...PrivateLinkResourceParameter;
+}
+
+@doc("State of the public network access.")
+@added(Versions.v2026_02_01)
+union PublicNetworkAccess {
+  string,
+
+  @doc("The public network access is enabled")
+  Enabled: "Enabled",
+
+  @doc("The public network access is disabled")
+  Disabled: "Disabled",
+}
+
 @doc("Purgeable orchestration state to be used in retention policies")
 @added(Versions.v2025_04_01_Preview)
 union PurgeableOrchestrationState {
@@ -211,6 +250,10 @@ model SchedulerPropertiesUpdate {
 
   @doc("SKU of the durable task scheduler")
   sku?: SchedulerSkuUpdate;
+
+  @added(Versions.v2026_02_01)
+  @doc("Allow or disallow public network access to durable task scheduler")
+  publicNetworkAccess?: PublicNetworkAccess;
 }
 
 @doc("The SKU (Stock Keeping Unit) properties to be updated")
@@ -277,3 +320,31 @@ interface RetentionPolicies {
   @doc("List Retention Policies")
   listByScheduler is ArmResourceListByParent<RetentionPolicy>;
 }
+
+/** Private endpoint connections operations */
+@added(Versions.v2026_02_01)
+@armResourceOperations(PrivateEndpointConnectionResource)
+interface PrivateEndpointConnections {
+  /** List existing private endpoint connections */
+  list is ArmResourceListByParent<PrivateEndpointConnectionResource>;
+  /** Get a specific private endpoint connection */
+  get is ArmResourceRead<PrivateEndpointConnectionResource>;
+  /** Create a private endpoint connection */
+  create is ArmResourceCreateOrReplaceAsync<PrivateEndpointConnectionResource>;
+  /** Delete the private endpoint connection */
+  delete is ArmResourceDeleteWithoutOkAsync<PrivateEndpointConnectionResource>;
+}
+
+/** Operations for private link resources on Scheduler */
+@added(Versions.v2026_02_01)
+@armResourceOperations(PrivateLinkResource)
+interface PrivateLinkResources {
+  /** list private link resources on the given resource */
+  list is ArmResourceListByParent<PrivateLinkResource>;
+  /** Get a specific private link resource */
+  get is ArmResourceRead<PrivateLinkResource>;
+}
+
+@@pattern(PrivateLinkResourceParameter.name, "^[A-Za-z0-9-._]{1,64}$");
+@@minLength(PrivateLinkResourceParameter.name, 2);
+@@maxLength(PrivateLinkResourceParameter.name, 64);
