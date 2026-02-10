@@ -37,6 +37,38 @@ These settings apply only when `--tag=package-2026-02-01` is specified on the co
 ```yaml $(tag) == 'package-2026-02-01'
 input-file:
   - Microsoft.DurableTask/stable/2026-02-01/durabletask.json
+suppressions:
+  - code: ArmResourcePropertiesBag
+    reason: Changing this property would constitute a breaking change. SKU property was approved in previous API versions.
+    from:
+      - durabletask.json
+    where:
+      - $.definitions.Scheduler
+      - $.definitions.SchedulerUpdate
+      - $.definitions.Scheduler.properties.sku
+      - $.definitions.Scheduler.properties.properties.sku
+      - $.definitions.SchedulerUpdate.properties.sku
+      - $.definition.SchedulerUpdate.properties.properties.sku
+      - $.definitions.SchedulerListResult
+      - $.definitions.SchedulerSku
+      - $.definitions.SchedulerSkuUpdate
+      - $.definitions.Scheduler.properties
+      - $.definitions.SchedulerUpdate.properties
+      - $.definitions.SchedulerProperties
+      - $.definitions.SchedulerPropertiesUpdate
+      - $.definitions.SchedulerProperties.properties
+      - $.definitions.SchedulerPropertiesUpdate.properties
+  - code: XMSSecretInResponse
+    reason: publicNetworkAccess is not a secret - it is a network configuration setting that controls public endpoint access.
+    from:
+      - durabletask.json
+    where:
+      - $.paths["/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}"].put.responses["200"].schema.properties.properties.properties.publicNetworkAccess
+      - $.paths["/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}"].put.responses["201"].schema.properties.properties.properties.publicNetworkAccess
+      - $.paths["/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}"].get.responses["200"].schema.properties.properties.properties.publicNetworkAccess
+      - $.paths["/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}"].patch.responses["200"].schema.properties.properties.properties.publicNetworkAccess
+      - $.paths["/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers"].get.responses["200"].schema.properties.properties.properties.publicNetworkAccess
+      - $.paths["/subscriptions/{subscriptionId}/providers/Microsoft.DurableTask/schedulers"].get.responses["200"].schema.properties.properties.properties.publicNetworkAccess
 ```
 
 ### Tag: package-2025-11-01
