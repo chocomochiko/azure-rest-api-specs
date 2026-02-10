@@ -174,20 +174,6 @@ model RetentionPolicyDetails {
   orchestrationState?: PurgeableOrchestrationState;
 }
 
-/** Holder for private endpoint connections */
-@added(Versions.v2026_02_01)
-@parentResource(Scheduler)
-model PrivateEndpointConnectionResource
-  is ProxyResource<PrivateEndpointConnectionProperties> {
-  ...PrivateEndpointConnectionParameter;
-}
-
-@added(Versions.v2026_02_01)
-@parentResource(Scheduler)
-model PrivateLinkResource is ProxyResource<PrivateLinkResourceProperties> {
-  ...PrivateLinkResourceParameter;
-}
-
 @doc("State of the public network access.")
 @added(Versions.v2026_02_01)
 union PublicNetworkAccess {
